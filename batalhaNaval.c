@@ -1,40 +1,30 @@
 #include <stdio.h>
+#include <stdlib.h>
+#define T 10
+#define H 5
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+int main(){
+    int tab[T][T]={0},cone[H][H],cruz[H][H],oct[H][H];
 
-int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    tab[4][4]=3; tab[5][5]=3; tab[2][7]=3;
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+    for(int i=0;i<H;i++)for(int j=0;j<H;j++){
+        cone[i][j]=(j>=H/2-i && j<=H/2+i);
+        cruz[i][j]=(i==H/2 || j==H/2);
+        oct[i][j]=(abs(i-H/2)+abs(j-H/2)<=H/2);
+    }
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+    int ox[3]={2,5,7}, oy[3]={2,5,7};
+    int*hab[3]={&cone[0][0],&cruz[0][0],&oct[0][0]};
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+    for(int h=0;h<3;h++)
+        for(int i=0;i<H;i++)for(int j=0;j<H;j++)
+            if(*(hab[h]+i*H+j)){
+                int x=ox[h]+i-H/2,y=oy[h]+j-H/2;
+                if(x>=0&&x<T&&y>=0&&y<T&&tab[x][y]==0) tab[x][y]=5;
+            }
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
-
-    return 0;
+    for(int i=0;i<T;i++){for(int j=0;j<T;j++)
+        printf(tab[i][j]==0?"~ ":tab[i][j]==3?"N ":"* ");
+        printf("\n");}
 }
